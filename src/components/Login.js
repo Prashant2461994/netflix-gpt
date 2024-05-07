@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
 const Login = () => {
+  const [isSignInForm, setIsSignForm] = useState(true);
+  const toggleSignForm = () => {
+    console.log(isSignInForm);
+    setIsSignForm(!isSignInForm);
+  };
   return (
-    <div className="relative w-full h-lvh flex flex-col items-center justify-between">
+    <div className="relative w-full h-screen flex flex-col items-center justify-between">
       <div className="flex w-full">
         <Header />
       </div>
@@ -14,30 +19,43 @@ const Login = () => {
           srcset="https://assets.nflxext.com/ffe/siteui/vlv3/c7f07b68-7989-4ff7-a31e-11c17dcc2fea/fcf685b8-3f9f-42d8-9af3-4bb86fa5a3b8/IN-en-20240422-popsignuptwoweeks-perspective_alpha_website_small.jpg 1000w, https://assets.nflxext.com/ffe/siteui/vlv3/c7f07b68-7989-4ff7-a31e-11c17dcc2fea/fcf685b8-3f9f-42d8-9af3-4bb86fa5a3b8/IN-en-20240422-popsignuptwoweeks-perspective_alpha_website_medium.jpg 1500w, https://assets.nflxext.com/ffe/siteui/vlv3/c7f07b68-7989-4ff7-a31e-11c17dcc2fea/fcf685b8-3f9f-42d8-9af3-4bb86fa5a3b8/IN-en-20240422-popsignuptwoweeks-perspective_alpha_website_large.jpg 1800w"
           alt="netflix-background-img"
         ></img>
-  </div>
+      </div>
 
-      <div className="my-[60px]  bg-black h-3/4 w-fit  opacity-80  flex  items-center justify-center">
-        <form className="flex flex-col items-center justify-center px-2 py-2 w-3/4">
-          <header className="text-5xl font-bold text-white  px-5 my-10 w-full">
-            Sign In
+      <div className="my-[60px]  bg-black h-2/3 py-5 w-1/5  opacity-80  flex  items-center justify-center">
+        <form className="flex flex-col items-center justify-center px-2 py-2 w-3/4 my-2">
+          <header className="text-4xl  font-bold text-white  px-5 my-5 w-full">
+            {isSignInForm ? "Sign In" : "Sign Up"}
           </header>
+           
+           {!isSignInForm && <input
+            type="text"
+            placeholder="Full name"
+            className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm "
+          />}
+          
           <input
             type="text"
             placeholder="Email or Mobile number"
-            className="block px-5 py-4 my-2 text-center font-semibold w-full rounded-sm"
+            className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm "
           />
           <input
             type="password"
             placeholder="Password"
-            className="block px-5 py-4 my-2 text-center font-semibold w-full rounded-sm"
+            className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm"
           />
-          <button className="font-bold text-2xl text-white bg-red-800 w-full mx-2 px-2 py-2 my-2 rounded-sm">
-            Sign up
+          <button className="font-bold text-xl text-white bg-red-800 w-full mx-2 px-2 py-1 my-2 rounded-sm">
+            {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
 
-          <footer className="text-white px-5">
-            This page is protected by Google reCaptcha to ensure you're not a
-            bot
+          <footer className="text-white px-5 mb-4">
+            {!isSignInForm? <p>
+              Are you new to Netflix? Click to{" "}
+              <span className="font-bold text-xl hover:cursor-pointer" onClick={toggleSignForm}>
+                SignUp
+              </span>
+            </p>:<p>
+            Already Registered <span onClick={toggleSignForm} className="font-bold text-xl hover:cursor-pointer"> Sign In</span> now
+          </p>}
           </footer>
         </form>
       </div>
