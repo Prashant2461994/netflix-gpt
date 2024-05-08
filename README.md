@@ -2,7 +2,12 @@
 
 - Created creat-react-app
 - Configured tailwindcss
-
+- Header
+- Routing
+- Login Form
+- Sign Up Form
+- Form Validation
+- useRef hook
 
 # Features
 - Login/SignUp

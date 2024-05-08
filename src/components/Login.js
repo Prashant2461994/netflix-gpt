@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { checkValidData } from "../utils/validate";
+import { errorMessages } from "../utils/errorMessages";
 
 const Login = () => {
   const [isSignInForm, setIsSignForm] = useState(true);
+  const [errorMsg, setErrorMessage] = useState([]);
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const toggleSignForm = () => {
     console.log(isSignInForm);
     setIsSignForm(!isSignInForm);
   };
+
+  const handleButtonClick = () => {
+    let email = emailRef.current.value;
+    let password = passwordRef.current.value;
+    const errors = checkValidData(email, password);
+    console.log(errors);
+    if (errors.length > 0) {
+      setErrorMessage(errors);
+    }
+  };
+
   return (
     <div className="relative w-full h-screen flex flex-col items-center justify-between">
       <div className="flex w-full">
@@ -21,41 +39,72 @@ const Login = () => {
         ></img>
       </div>
 
-      <div className="my-[60px]  bg-black h-2/3 py-5 w-1/5  opacity-80  flex  items-center justify-center">
+      <div
+        onSubmit={(e) => e.preventDefault()}
+        className="my-[60px]  bg-black h-2/3 py-5 w-1/5  opacity-80  flex  items-center justify-center"
+      >
         <form className="flex flex-col items-center justify-center px-2 py-2 w-3/4 my-2">
           <header className="text-4xl  font-bold text-white  px-5 my-5 w-full">
             {isSignInForm ? "Sign In" : "Sign Up"}
           </header>
-           
-           {!isSignInForm && <input
-            type="text"
-            placeholder="Full name"
-            className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm "
-          />}
-          
+
+          {!isSignInForm && (
+            <input
+              type="text"
+              placeholder="Full name"
+              className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm "
+            />
+          )}
+
           <input
+            ref={emailRef}
             type="text"
             placeholder="Email or Mobile number"
             className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm "
           />
+          <small className="text-red-400 font-bold">
+            {errorMsg.includes(errorMessages.emailMsg)
+              ? errorMessages.emailMsg
+              : ""}
+          </small>
           <input
+            ref={passwordRef}
             type="password"
             placeholder="Password"
             className="block px-5 py-2 my-2 text-center font-semibold w-full rounded-sm"
           />
-          <button className="font-bold text-xl text-white bg-red-800 w-full mx-2 px-2 py-1 my-2 rounded-sm">
+          <small className="text-red-400 font-bold">{errorMsg.includes(errorMessages.passwordMsg)? errorMessages.passwordMsg:""}</small>
+          <button
+            className="font-bold text-xl text-white bg-red-800 w-full mx-2 px-2 py-1 my-2 rounded-sm"
+            onClick={handleButtonClick}
+          >
             {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
 
           <footer className="text-white px-5 mb-4">
-            {!isSignInForm? <p>
-              Are you new to Netflix? Click to{" "}
-              <span className="font-bold text-xl hover:cursor-pointer" onClick={toggleSignForm}>
-                SignUp
-              </span>
-            </p>:<p>
-            Already Registered <span onClick={toggleSignForm} className="font-bold text-xl hover:cursor-pointer"> Sign In</span> now
-          </p>}
+            {!isSignInForm ? (
+              <p>
+                Are you new to Netflix? Click to{" "}
+                <span
+                  className="font-bold text-xl hover:cursor-pointer"
+                  onClick={toggleSignForm}
+                >
+                  SignUp
+                </span>
+              </p>
+            ) : (
+              <p>
+                Already Registered{" "}
+                <span
+                  onClick={toggleSignForm}
+                  className="font-bold text-xl hover:cursor-pointer"
+                >
+                  {" "}
+                  Sign In
+                </span>{" "}
+                now
+              </p>
+            )}
           </footer>
         </form>
       </div>
